@@ -1,23 +1,24 @@
-import logo from './logo.svg';
 import './App.css';
+import React, { useState } from 'react'
+import AddForm from './Components/AddForm'
+import WatchList from './Components/WatchList'
 
 function App() {
+  const [watches, setWatches] = useState([]);
+
+  const handleAdd = watchNew => {
+    if (watches.find(w => w.name === watchNew.name))
+      alert('Часы с таким названием уже были добавлены')
+    else
+      setWatches(prevState => [...prevState, watchNew])
+  }
+
+  const handleRemove = name => {setWatches(prevState => prevState.filter(w => w.name !== name))}
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <AddForm onAdd={handleAdd}/>
+      <WatchList watches={watches} handleRemove={handleRemove}/>
     </div>
   );
 }
